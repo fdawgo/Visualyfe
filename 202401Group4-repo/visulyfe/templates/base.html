@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: #fff;
+    }
+
+    body {
+      background: #081b29;
+      font-family: 'Poppins';
+      overflow-y: auto;
+      
+    }
+
+    .container-full {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+    }
+
+    header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px;
+    }
+
+    #left-header {
+      align-items: center;
+      text-align: center;
+    }
+
+    #left-header h2 {
+      text-transform: uppercase;
+      font-weight: 400;
+      font-style: normal;
+      letter-spacing: 4px;
+      margin-top: 8px;
+      margin-left: 15px;
+    }
+
+    #right-header {
+      display: flex;
+      flex-direction: row;
+      margin-left: -30px;
+    }
+
+    .carousel-inner {
+      width: 80%;
+      /* Adjust the width as needed */
+      margin: 0 auto;
+      /* Center the carousel inner */
+    }
+
+    #nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-weight: 500;
+      margin-right: 15px;
+      gap: 15px;
+    }
+
+    .login-btn {
+      border: 1px solid #081b29;
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 10px 15px;
+      color: #081b29;
+      text-transform: capitalize;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .login-btn:hover {
+      border: 1px solid #fff;
+      background-color: #081b29;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .logout-btn {
+      border: 1px solid #081b29;
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 10px 15px;
+      color: #081b29;
+      text-transform: capitalize;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .logout-btn:hover {
+      border: 1px solid #fff;
+      background-color: #081b29;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .sign-up-btn {
+      border: 1px solid #081b29;
+      background-color: #fff;
+      border-radius: 20px;
+      padding: 10px 15px;
+      color: #081b29;
+      text-transform: capitalize;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+
+    .sign-up-btn:hover {
+      border: 1px solid #fff;
+      background-color: #081b29;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    #search-form {
+      border-radius: 5px;
+      border-color: transparent;
+      background-color: #A3AABE;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-right: 10px;
+    }
+
+    #search-form input {
+      all: unset;
+      font: 16px system-ui;
+      color: #fff;
+      height: 100%;
+      width: 100%;
+      padding: 2px 10px;
+    }
+
+    ::placeholder {
+      color: #fff;
+      opacity: 0.7;
+    }
+
+    #search-form button {
+      all: unset;
+      cursor: pointer;
+      width: 45px;
+      height: 40px;
+    }
+
+    #search-form svg {
+      color: #fff;
+      fill: currentColor;
+      align-items: center;
+      width: 30px;
+      height: 30px;
+    }
+
+    .settings {
+      color: #fff;
+      fill: currentColor;
+      align-items: center;
+      text-align: center;
+      height: 35px;
+      width: 35px;
+      margin-right: 10px;
+    }
+
+    main {
+      display: flex;
+      width: 100%;
+      margin: auto;
+      overflow: hidden;
+    }
+
+    .side-screen {
+      flex: 25%;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #fff;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      min-height: 91vh;
+      
+    }
+
+    .side-screen-items {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .close-button {
+      width: 30px;
+      height: 6px;
+      background-color: #A3AABE;
+      position: relative;
+      transform: rotate(90deg);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .close-button:hover {
+      background-color: #fff;
+    }
+
+    #side-screen-toggle {
+      display: flex;
+      align-items: center;
+    }
+
+
+    #graph-screen {
+      flex: 75%;
+      display: flex;
+      flex-direction: column;
+      min-height: 91vh;
+
+    }
+
+    #user-upload-form {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+    }
+
+    #uploadCSV[type="file"] {
+      width:100px;
+      overflow: hidden;
+    }
+    
+
+
+    #user-upload-form #CSVSubmit {
+      border: 1px solid white;
+      border-radius: 10px;
+      padding: 4px 8px;
+      background-color: #081b29;
+      color: white;
+      text-transform: capitalize;
+    }
+
+    #saveBtn {
+      border: 1px solid white;
+      border-radius: 10px;
+      padding: 4px 8px;
+      background-color: #081b29;
+      color: white;
+      text-transform: capitalize;
+    }
+
+    #create-graph-btn {
+      border: 1px solid white;
+      border-radius: 10px;
+      padding: 4px 8px;
+      background-color: #081b29;
+      color: white;
+      text-transform: capitalize;
+    }
+
+    #y-column {
+      color: #081b29;
+    }
+
+    .color-select {
+      margin-bottom: 0px;
+    }
+
+    #color-select, #graph-select, #dataset-name {
+      color: #081b29;
+    }
+
+    #x-column, #y-column {
+      color: #081b29;
+    }
+
+    #download-and-upload-form {
+      display: flex;
+      flex-direction: row;
+    }
+
+    #graph-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #graph-display {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      min-height: 85%;
+    }
+
+    #graph-display input {
+      border: 1px solid white;
+      border-radius: 10px;
+      padding: 4px 8px;
+      background-color: #081b29;
+      color: white;
+      text-transform: capitalize;
+    }
+
+    #graph {
+      background-color: #A3AABE;
+      width: 95%;
+      height: 95%;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      border-radius: 10px;
+    }
+
+    #graph-info-div {
+      padding: 20px 40px;
+    }
+
+    #graph-info {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+    }
+
+    #graph-info-about {
+      flex: 50%;
+      text-align: left;
+    }
+
+    #graph-info-descripton {
+      flex: 50%;
+      text-align: left;
+    }
+
+    .search-scroller {
+      display: grid;
+      gap: 16px;
+      grid-auto-flow: column;
+      grid-auto-columns: 23%;
+      grid-template-rows: 46% 46%;
+      padding: 12px 12px 18px 12px;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      min-height: 35%;
+    }
+
+    .search-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-radius: 10px;
+      background-color: #A3AABE;
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+    }
+
+
+    .search-item-info {
+      width: 100%;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 300;
+    }
+
+    .search-item-info p {
+      color: #081b29;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      padding: 5px 0px 0px 0px;
+    }
+
+    .search-item-info-btns {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 40px;
+      width: 100%;
+      padding: 0px 0px 5px 0px;
+    }
+
+    .search-item-info-btns button {
+      border: none;
+      background-color: transparent;
+    }
+
+    .search-item-info-btns svg {
+      height: 30px;
+    }
+
+
+    .side-screen.closed {
+      flex: 0;
+      display: none;
+    }
+
+    .graph-screen.expanded {
+      flex: 100vh;
+    }
+
+    #welcome-form {
+      width: 25%;
+      margin: auto;
+    }
+
+    ::-webkit-input-placeholder {
+      color: black;
+    }
+
+    .wrapper {
+      position: relative;
+      width: 80%;
+      max-width: 800px;
+      height: 65vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      display: grid;
+      border: 3px solid #00ffff;
+      box-shadow: 0 0 50px 0 #00a6bc;
+      padding: 20px;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .title {
+      font-size: 35px;
+    }
+
+    .inp {
+      position: relative;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .input {
+      border: none;
+      outline: none;
+      background: none;
+      padding-right: 30px;
+      font-size: 17px;
+      width: 100%;
+    }
+
+    .toggleable-password {
+      border: none;
+      outline: none;
+      background: none;
+      padding-right: 30px;
+      font-size: 17px;
+      width: 100%;
+    }
+
+    .icon {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    .submit {
+      border: none;
+      outline: none;
+      width: 288px;
+      margin-top: 25px;
+      padding: 10px 0;
+      font-size: 20px;
+      border-radius: 40px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      background: linear-gradient(45deg, #0ef, #c800ff);
+    }
+
+    .footer {
+      margin-top: 30px;
+      letter-spacing: 0.5px;
+      font-size: 14px;
+    }
+
+    .link {
+      color: #0ef;
+      text-decoration: none;
+    }
+
+    .wel_text {
+      font-size: 40px;
+      margin-top: -50px;
+      line-height: 50px;
+    }
+
+    .para {
+      margin-top: 10px;
+      font-size: 18px;
+      line-height: 24px;
+      letter-spacing: 1px;
+    }
+  </style>
+  <title>{% block title %}Base{% endblock %}</title>
+</head>
+
+<body>
+  <header>
+    <div id="left-header">
+      <h2>Visulyfe</h2>
+    </div>
+    <div id="right-header">
+      <div id="nav">
+        {% if user.is_authenticated %}
+        {% if datasets %}
+        <!--
+        <h2>Popular Datasets:</h2>
+        <div id="dataset-carousel" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner text-center">
+            {% for dataset in datasets %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+              <a href="{{ dataset.url }}">{{ dataset.title }}</a>
+            </div>
+            {% endfor %}
+          </div>
+          <a class="carousel-control-prev" href="#dataset-carousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#dataset-carousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+        -->
+        {% endif %}
+        <form action="" id="search-form">
+          <input type="search" name="search" id="search" placeholder="Search...">
+          <button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>magnify</title>
+              <path
+                d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+            </svg>
+          </button>
+        </form>
+        <a class="settings" id="settings" href="">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <title>close-outline</title>
+            <path
+              d="M6.225,4.811L4.811,6.225L10.586,12L4.811,17.775L6.225,19.189L12,13.414L17.775,19.189L19.189,17.775L13.414,12L19.189,6.225L17.775,4.811L12,10.586L6.225,4.811Z" />
+          </svg>
+        </a>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Your Datasets
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% if user_datasets and user_datasets|length > 0 %}
+            {% for dataset in user_datasets %}
+            <div class="dropdown-item d-flex justify-content-between align-items-center">
+              <span>{{ dataset.filename }}</span>
+              <!-- Form to delete the dataset -->
+              <form method="POST" action="{{ url_for('auth.delete_dataset', dataset_id=dataset.id) }}"
+                onsubmit="return confirm('Are you sure you want to delete this dataset?');">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </div>
+            {% endfor %}
+            {% else %}
+            <span class="dropdown-item text-muted">No datasets available</span>
+            {% endif %}
+          </div>
+        </div>
+        <a class="logout-btn" id="logout" href="/logout">Logout</a>
+        {% else %}
+        <a class="login-btn" id="login" href="/">Login</a>
+        <a class="sign-up-btn" id="signUp" href="/sign-up">Sign Up</a>
+        <a class="sign-up-btn" id="about" href="/about">About</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %} {% for category, message in messages %} {% if category ==
+  'error' %}
+  <div class="alert alert-danger alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% else %}
+  <div class="alert alert-success alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endif %} {% endfor %} {% endif %} {% endwith %}
+
+  <div class="container">{% block content %} {% endblock %}</div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <!-- JavaScript for Toggle Functionality -->
+  <script>
+    // Select all elements with the class 'toggle-icon'
+    const toggleIcons = document.querySelectorAll(".toggle-icon");
+
+    // Add event listener to each toggle icon
+    toggleIcons.forEach(icon => {
+      icon.addEventListener("click", function () {
+        // Find the corresponding password input field (assumes it is the previous sibling)
+        const passwordInput = this.previousElementSibling;
+
+        // Toggle between 'text' and 'password'
+        const type = passwordInput.type === "password" ? "text" : "password";
+        passwordInput.type = type;
+
+        // Change icon accordingly
+        this.classList.toggle("fa-eye");
+        this.classList.toggle("fa-eye-slash");
+      });
+    });
+  </script>
+  <script>
+    ///////////
+
+    // Get references to the search form and search results div
+    const searchForm = document.getElementById('search-form');
+    const searchResultsDiv = document.getElementById('search-results');
+
+    // Add event listener to the search form
+    searchForm.addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent default form submission behavior
+
+      // Get the trimmed search input value
+      const searchInput = document.getElementById('search').value.trim();
+
+      // Check if search input is not empty
+      if (searchInput !== '') {
+        // Fetch search results based on the input
+        fetch(`/search?query=${searchInput}`)
+          .then(response => response.json()) // Parse response as JSON
+          .then(data => {
+            // Check if results are available
+            if (data.results) {
+              // Check if search results div is hidden, then show it
+              if (searchResultsDiv.style.display === 'none') {
+                searchResultsDiv.style.display = '';
+              }
+              // Display search results
+              displaySearchResults(data.results);
+            } else if (data.error) {
+              // Display error message if there's an error
+              searchResultsDiv.innerHTML = `<p>${data.error}</p>`;
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching search results:', error);
+          });
+      }
+    });
+    // Function to display search results
+    function displaySearchResults(results) {
+      // Clear previous search results
+      const searchResultsDiv = document.getElementById('search-results');
+      searchResultsDiv.innerHTML = '';
+
+      // Iterate through the results and display them
+      results.slice(0, 20).forEach(result => {
+        // Create a div element for each search result
+        const searchItemDiv = document.createElement('div');
+        searchItemDiv.classList.add('search-item');
+
+        // Create a div for search item info
+        const searchItemInfoDiv = document.createElement('div');
+        searchItemInfoDiv.classList.add('search-item-info');
+
+        // Creare a div for the buttons in the search item info
+        const searchItemInfoBtnsDiv = document.createElement('div');
+        searchItemInfoBtnsDiv.classList.add('search-item-info-btns')
+
+        // Create the dataset title
+        const datasetTitle = document.createElement('p');
+        datasetTitle.textContent = result.title;
+
+        // Create a button to navigate to the Kaggle dataset URL
+        const visitButton = document.createElement('button');
+        visitButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>eye-outline</title><path d="M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z" /></svg>'
+        visitButton.addEventListener('click', function () {
+          // Navigate to the Kaggle dataset URL
+          window.location.href = result.url;
+        });
+
+        // Extract the dataset reference from the URL
+        const datasetReference = result.url.split('/datasets/')[1];
+
+        // Create a button to populate the form and submit
+        const downloadButton = document.createElement('button');
+        downloadButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>tray-arrow-down</title><path d="M2 12H4V17H20V12H22V17C22 18.11 21.11 19 20 19H4C2.9 19 2 18.11 2 17V12M12 15L17.55 9.54L16.13 8.13L13 11.25V2H11V11.25L7.88 8.13L6.46 9.55L12 15Z" /></svg>'
+        downloadButton.addEventListener('click', function () {
+          // Populate the form fields
+          document.getElementById('dataset-ref-input').value = datasetReference;
+          document.getElementById('dataset-name').value = result.title;
+
+          // Trigger the form submission
+          document.getElementById('download-and-upload-form').dispatchEvent(new Event('submit'));
+        });
+
+        // Append the title, visit button, and download button to the search item div
+
+        searchItemInfoDiv.appendChild(datasetTitle);
+        searchItemInfoBtnsDiv.appendChild(visitButton);
+        searchItemInfoBtnsDiv.appendChild(downloadButton);
+
+        searchItemDiv.appendChild(searchItemInfoDiv);
+        searchItemDiv.appendChild(searchItemInfoBtnsDiv)
+
+        // Append the search item div to the search results div
+        searchResultsDiv.appendChild(searchItemDiv);
+      });
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content%}
+<form method="POST" id="welcome-form">
+    <h1 class="title">Welcome</h1>
+    <div class="inp">
+        <input type="text" name="email" id="email" class="input" placeholder="Email">
+    </div>
+    <div class="inp">
+        <input type="password" name="password" id="password" class="toggleable-password" placeholder="Password">
+        <i class="toggle-icon fa fa-eye"></i>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <p class="footer"> Need an Account? <a href="/sign-up" class="link"> Please Register Here</a></p>
+    <p class="footer"> Forgot Your Password? <a href="/recover-pass" class="link"> Recover Password Here</a></p>
+</form>
+{% endblock %}

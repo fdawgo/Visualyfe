@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block title %}Password Recovery{% endblock %} {% block content%}
+<form method="POST" class="form">
+    <h2 class="title">Reset Password</h2>
+    <p class="para">Please enter the email registered with your account.
+        Click "Send Link" for a password recovery link to be sent to your email.
+    </p>
+    <div class="inp">
+        <input type="email" name="email" id="email" class="input" placeholder=" Enter your email" required>
+    </div>
+    <button class="btn btn-primary" type="submit">Send Link</button>
+</form>
+{% endblock %}

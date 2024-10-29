@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload CSV</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+    <body>
+        {% if graph_div %}
+    <h1>Graph</h1>
+    <iframe srcdoc="{{ graph_div }}" width="800" height="600"></iframe>
+    {% endif %}
+
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+
+    </body>

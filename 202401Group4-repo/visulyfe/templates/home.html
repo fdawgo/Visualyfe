@@ -1,0 +1,300 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
+<div class="container-full">
+    <main>
+        <div class="side-screen" id="side-screen">
+
+            <div class="side-screen-items">
+
+                <div id="columns-container" ></div>
+
+                
+                <div class="user-upload-form"></div>
+                <form id ='user-upload-form' method = "POST" enctype="multipart/form-data">
+                    <input type="file" name = "file" accept=".csv" id="uploadCSV">
+                    <input type = "submit" value = "read" id="CSVSubmit">
+                </form>
+                <form id="download-and-upload-form" method="POST">
+                    <label for="dataset-ref-input"></label>
+                    <input type="hidden" id="dataset-ref-input" name="dataset_ref"
+                        placeholder="Enter Kaggle dataset reference" />
+    
+                    <label for="dataset-name"></label>
+                    <input type="hidden" id="file-path" name="file_path" value=""> 
+                </form>
+                <form id="save_to_dataset" method="POST">
+                    <input type="submit" value="Save Button" id="saveBtn">
+                </form>
+    
+    
+                <form id="graph-form" method="POST">
+                    
+                    <input type="text" id="dataset-name" name="dataset_name" placeholder="Enter a unique dataset name" />
+                    <label for="graph-select">Graph Type:</label><br>
+                    <select id="graph-select" name="graph-select">
+                        <option value="line">Line</option>
+                        <option value="scatter">Scatter</option>
+                        <option value="bar">Bar</option>
+                    </select>
+                    <label for="color-select" class="color-select">Color:</label><br>
+                    <select id="color-select" name="color-select">
+                        <option value="red">Red</option>
+                        <option value="green">Green</option>
+                        <option value="blue">Blue</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="purple">Purple</option>
+                        <option value="orange">Orange</option>
+                        <option value="pink">Pink</option>
+                    </select>
+                    <label for="x-column">X-Axis Column:</label>
+                    <input type="text" id="x-column" name="x_column" placeholder="Enter x-axis column name" />
+                    <label for="y-column">Y-Axis Column:</label>
+                    <input type="text" id="y-column" name="y_column" placeholder="Enter y-axis column name" />
+                    <button id="create-graph-btn" type="button">Create Graph</button>
+                </form>
+    
+               
+            </div>
+
+        </div>
+        <div id="side-screen-toggle">
+            <div class="close-button" id="close-button"></div>
+        </div>
+        <div id="graph-screen">
+            <div class="search-scroller" id="search-results" style="display: none;">
+
+            </div>
+            <div id="graph-display">
+                <iframe id="graph-iframe" width="100%" height="500px" frameborder="0"></iframe>
+            </div>
+        </div>
+    </main>
+</div>
+<script>
+
+    const  x = document.getElementById("settings").addEventListener("click", function(e){
+        e.preventDefault()
+
+        const searchDisplay = document.getElementById("search-results").style.display = "none"
+    })
+
+    // Side screen open and close eventListener toggle 
+    const sideScreen = document.getElementById('side-screen');
+    const graphScreen = document.getElementById('graph-screen');
+
+    const closeBtn = document.getElementById('close-button');
+
+    closeBtn.addEventListener('click', function () {
+        if (sideScreen.classList.contains('closed')) {
+            sideScreen.classList.remove('closed');
+            graphScreen.classList.remove('expanded');
+        } else {
+            sideScreen.classList.add('closed');
+            graphScreen.classList.add('expanded');
+        }
+    });
+
+    document.getElementById('user-upload-form').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent default form submission behavior
+    const formData = new FormData(this); // Get form data
+    const datasetName = document.getElementById('dataset-name').value.trim();
+    // Make a POST request to upload the CSV
+    fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message); // Show success message
+            // Update hidden input fields in the download-and-upload-form
+            document.getElementById('dataset-ref-input').value = ''; // Clear Kaggle dataset reference
+            document.getElementById('file-path').value = data.csv_path; // Set CSV file path
+            document.getElementById('dataset-name').value = data.filename; // Set dataset name
+        } else if (data.error) {
+            alert(`Error: ${data.error}`); // Show error message
+        }
+        if (data.columns) {
+            displayColumns(data.columns);
+        }
+
+    })
+
+    .catch(error => {
+        console.error('Error during upload:', error);
+        alert('An error occurred during upload. Check the console for details.');
+    });
+});
+//     function populateColumnSelectors(columns) {
+//     const xColumnSelect = document.getElementById('x-column-select');
+//     const yColumnSelect = document.getElementById('y-column-select');
+
+//     // Clear existing options to avoid duplicates
+//     xColumnSelect.innerHTML = '';
+//     yColumnSelect.innerHTML = '';
+
+//     columns.forEach((column) => {
+//         const option = document.createElement('option');
+//         option.value = column;
+//         option.textContent = column;
+
+//         // Add option to both X and Y dropdowns
+//         xColumnSelect.appendChild(option.cloneNode(true)); // Cloning to maintain reference
+//         yColumnSelect.appendChild(option.cloneNode(true));
+//     });
+// }
+
+document.getElementById('download-and-upload-form').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    const datasetRef = document.getElementById('dataset-ref-input').value.trim();
+    const datasetName = document.getElementById('dataset-name').value.trim();
+
+    if (datasetRef && datasetName) {
+        fetch('/download_and_display_columns', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'dataset_ref': datasetRef,
+                'dataset_name': datasetName,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                // CSV download successful
+                alert('CSV downloaded and stored successfully');
+
+                // Store the CSV path for later use
+                document.getElementById('file-path').value = data.csv_path;
+
+                // Populate the column selectors with the returned column names
+                if (data.columns) {
+                    displayColumns(data.columns);
+                }
+            } else if (data.error) {
+                alert(`Error: ${data.error}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error during download and upload:', error);
+            alert('An error occurred during download and upload. Check the console for details.');
+        });
+    } else {
+        alert('Please fill in all required fields.');
+    }
+});
+
+    function displayColumns(columns) {
+        const columnsContainer = document.getElementById('columns-container');
+        columnsContainer.innerHTML = '<h3>Columns in the CSV file:</h3>';
+        const ul = document.createElement('ul');
+        columns.forEach((column, index) => {
+            const li = document.createElement('li');
+            li.textContent = `Index ${index}: ${column}`;
+            li.style.color = 'white';
+            ul.appendChild(li);
+        });
+        columnsContainer.appendChild(ul);
+    }
+
+// Example usage:
+// Suppose you have an array of columns from your CSV file
+
+
+    document.getElementById('create-graph-btn').addEventListener('click', () => {
+        event.preventDefault();
+
+        const dataname = document.getElementById('dataset-name').value.trim();
+        const graphType = document.getElementById('graph-select').value;
+        const color = document.getElementById('color-select').value;
+        const xColumn = document.getElementById('x-column').value.trim();
+        const yColumn = document.getElementById('y-column').value.trim();
+        const filePath = document.getElementById('file-path').value.trim();
+
+        if (!dataname || !graphType || !xColumn || !yColumn || !filePath) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+        const requestBody = {
+            'dataset_name': dataname,
+            'graph': graphType,
+            'color': color,
+            'x_column': xColumn,
+            'y_column': yColumn,
+            'file_path': filePath,
+        };
+
+        fetch('/create_graph', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+
+        })
+
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return response.text(); // Convert response to text
+        })
+                .then((html) => {
+                    const iframe = document.getElementById('graph-iframe'); // Target iframe to display the graph
+                    iframe.srcdoc = html; // Set the HTML content
+                })
+                .catch((error) => {
+                    console.error('Error creating graph:', error); // Log the error
+                    alert('An error occurred while creating the graph. Check the console for details.');
+                });
+    });
+
+    document.getElementById('save_to_dataset').addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const dataname = document.getElementById('dataset-name').value.trim();
+    const filePath = document.getElementById('file-path').value.trim();
+   
+
+    if (!dataname || !filePath ) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    const requestBody = {
+        'dataset_name': dataname,
+        'file_path': filePath,
+         // Assuming dataset is properly formatted
+    };
+
+    fetch('/save', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+        return response.json(); // Assuming you're expecting a JSON response
+    })
+    .then((data) => {
+        if (data.Empty) {
+            alert(" There is no file to save");
+
+        }
+        // Assuming you want to do something with the response data
+        console.log(data);
+        alert('Dataset saved successfully!');
+    })
+    .catch((error) => {
+        console.error('Error saving dataset:', error);
+        alert('An error occurred while saving the dataset. Check the console for details.');
+    });
+});
+</script>
+{% endblock %}
